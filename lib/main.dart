@@ -79,7 +79,7 @@ final _router = GoRouter(
   ],
   refreshListenable: redirectData,
   redirect: (context, state) {
-    return redirectData.isLogin ? '/' : '/redirect';
+    return redirectData.isLogin ? null : '/redirect';
   },
 );
 
