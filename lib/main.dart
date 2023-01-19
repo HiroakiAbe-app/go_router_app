@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_sample/first_page.dart';
+import 'package:go_router_sample/redirect_page.dart';
 import 'package:go_router_sample/second_page.dart';
 import 'package:go_router_sample/third_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+class RedirectData extends ChangeNotifier {
+  bool isLogin = true;
+  void redirect() {
+    isLogin = !isLogin;
+    notifyListeners();
+  }
+}
+
+final redirectData = RedirectData();
 
 final _router = GoRouter(
   routes: [
@@ -61,7 +72,15 @@ final _router = GoRouter(
         },
       ),
     ),
+    GoRoute(
+      path: '/redirect',
+      builder: (context, state) => const RedirectPage(),
+    ),
   ],
+  refreshListenable: redirectData,
+  redirect: (context, state) {
+    return redirectData.isLogin ? '/' : '/redirect';
+  },
 );
 
 class MyApp extends StatelessWidget {
@@ -92,7 +111,7 @@ class MyHomePage extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Redirect Sample'),
-            onTap: () => context.go('/redirect'),
+            onTap: () => redirectData.redirect(),
           )
         ],
       ),
