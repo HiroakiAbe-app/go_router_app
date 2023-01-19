@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_sample/first_page.dart';
+import 'package:go_router_sample/second_page.dart';
+import 'package:go_router_sample/third_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +20,36 @@ final _router = GoRouter(
       path: '/first',
       pageBuilder: (context, state) => CustomTransitionPage(
         child: const FirstPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/second',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const SecondPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/third',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const ThirdPage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -59,7 +91,7 @@ class MyHomePage extends StatelessWidget {
             onTap: () => context.push('/first'),
           ),
           ListTile(
-            title: Text('Redirect Sample'),
+            title: const Text('Redirect Sample'),
             onTap: () => context.go('/redirect'),
           )
         ],
